@@ -3,6 +3,7 @@ package GameStates;
 import Entities.Player;
 import Main.Game;
 import levels.LevelManager;
+import ui.PauseOverlay;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,8 @@ import static Main.Game.*;
 public class Playing extends State implements StateMethods{
     private Player player;
     private LevelManager levelManager;
+    private PauseOverlay pauseOverlay;
+    private boolean paused;
 
     public Playing(Game game) {
         super(game);
@@ -23,6 +26,7 @@ public class Playing extends State implements StateMethods{
         levelManager = new LevelManager(game);
         player = new Player(200,200,(int)(62.5*SCALE),(int)(46.25*SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        pauseOverlay = new PauseOverlay();
     }
 
     public void windowFocusLost() {
@@ -36,12 +40,17 @@ public class Playing extends State implements StateMethods{
     public void update() {
        levelManager.update();
        player.update();
+
+       pauseOverlay.update();
     }
 
     @Override
     public void draw(Graphics g) {
          levelManager.draw(g);
          player.render(g);
+         if(paused){
+             pauseOverlay.draw(g);
+         }
     }
 
     @Override
@@ -53,17 +62,20 @@ public class Playing extends State implements StateMethods{
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseReleased(e);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if(paused)
+            pauseOverlay.mouseMoved(e);
     }
 
     @Override
@@ -88,7 +100,7 @@ public class Playing extends State implements StateMethods{
                 System.out.println("Jump key");
             }
             case KeyEvent.VK_ESCAPE -> {
-                GameState.state = GameState.MENU;
+                paused = !paused;
                 System.out.println("Escape key");
             }
         }

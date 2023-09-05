@@ -16,6 +16,10 @@ public class LoadSave {
 
     public static String BUTTONS = "/button_atlas.png";
     public static String MENU_BACKGROUND = "/menu_background.png";
+    public static String PAUSE_BACKGROUND = "/pause_background.png";
+    public static String SOUND_BUTTONS = "/sound_button.png";
+    public static String URM_BUTTONS = "/urm_buttons.png";
+    public static String VOLUME_BUTTONS = "/volume_buttons.png";
 
     public static BufferedImage getAtlas(String fileName){
         BufferedImage img = null;
